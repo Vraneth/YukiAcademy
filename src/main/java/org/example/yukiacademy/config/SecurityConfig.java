@@ -17,10 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration; // Importa CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource; // Importa UrlBasedCorsConfigurationSource
-import org.springframework.web.filter.CorsFilter; // Importa CorsFilter
-import java.util.Arrays; // Importa Arrays
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -49,16 +49,16 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        // Permitir acceso a la API de autenticación, Swagger UI y ¡¡¡LA CONSOLA H2!!!
+                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**").permitAll() // <--- CAMBIO CLAVE AQUÍ
                         .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        // Añade el filtro CORS ANTES del filtro de autenticación de Spring Security
-        // Es CRÍTICO que el filtro CORS se ejecute muy temprano en la cadena de filtros.
         http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // <--- CAMBIO CLAVE AQUÍ
 
         return http.build();
     }
@@ -81,20 +81,22 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // Definición del bean CorsFilter
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // Permite credenciales (cookies, encabezados de autenticación)
+        config.setAllowCredentials(true);
 
-        // **AQUÍ ESTÁ EL CAMBIO CLAVE:**
-        // Asegúrate de que el origen de tu frontend (http://localhost:5174) esté permitido.
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:5175", "http://localhost:3000")); // Puedes añadir más orígenes si es necesario
+        config.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:5175"
+        ));
 
-        config.addAllowedHeader("*"); // Permite todos los encabezados
-        config.addAllowedMethod("*"); // Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
-        source.registerCorsConfiguration("/**", config); // Aplica esta configuración a todas las rutas
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
