@@ -5,14 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.time.LocalDateTime; // Para registrar la fecha de creación/última actualización
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", // Nombre de la tabla
+@Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email") // Asegura que el email sea único
+                @UniqueConstraint(columnNames = "email")
         })
 @Data
 @NoArgsConstructor
@@ -23,49 +23,52 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email; // Usado para login
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
 
-    @Column(nullable = false)
-    private String password; // ¡Debe almacenarse cifrada!
+    @Column(nullable = false, length = 120)
+    private String password;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50) // Campo para el nombre
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50) // Campo para el apellido
     private String lastName;
 
-    // Relación ManyToMany con la entidad Role
-    // fetch = FetchType.EAGER significa que los roles se cargarán inmediatamente con el usuario
-    // @JoinTable define la tabla intermedia para la relación muchos a muchos
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles", // Nombre de la tabla intermedia
-            joinColumns = @JoinColumn(name = "user_id"), // Columna que referencia al User
-            inverseJoinColumns = @JoinColumn(name = "role_id") // Columna que referencia al Role
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>(); // Usa HashSet para roles únicos
+    private Set<Role> roles = new HashSet<>();
 
-    // Campos adicionales para el perfil de usuario, según tus requerimientos
     @Column(name = "profile_picture_url")
-    private String profilePictureUrl; // URL a la imagen de perfil
-    private String bio; // Biografía o descripción corta
-    private String interests; // Intereses del usuario
+    private String profilePictureUrl;
+    private String bio;
+    private String interests;
 
-    // Campos de auditoría (opcionales pero recomendados para rastreo)
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Métodos de ciclo de vida de JPA para gestionar las fechas automáticamente
-    @PrePersist // Se ejecuta antes de persistir una nueva entidad
+    // Constructor para la creación de usuarios desde el registro (sin roles inicialmente)
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createdAt = LocalDateTime.now(); // Establecer fecha de creación al construir
+    }
+
+    @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    @PreUpdate // Se ejecuta antes de actualizar una entidad existente
+    @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }

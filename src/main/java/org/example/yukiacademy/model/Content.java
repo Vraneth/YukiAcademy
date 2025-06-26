@@ -1,9 +1,17 @@
 package org.example.yukiacademy.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob; // Importación necesaria para @Lob
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "contents")
@@ -16,20 +24,22 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String title;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private ContentType type; // VIDEO, PDF, TEXT, LINK
-
-    @Column(columnDefinition = "TEXT")
-    private String contentUrl; // URL del video, PDF, o el texto/link en sí
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id", nullable = false)
-    private Lesson lesson;
+    // Se utiliza @Lob y columnDefinition para mapear a CLOB en Oracle para texto largo
+    @Lob
+    @Column(name = "content_url", columnDefinition = "CLOB")
+    private String contentUrl;
 
     @Column(name = "order_index")
-    private Integer orderIndex; // Para el orden de los contenidos dentro de la lección
+    private Integer orderIndex;
+
+    @Column(nullable = false, length = 100) // Mapea a VARCHAR2(100) en Oracle
+    private String title;
+
+    @Column(nullable = false, length = 20) // Mapea a VARCHAR2(20) en Oracle
+    // Se asume que 'type' es un String. Si es un enum, se usaría @Enumerated(EnumType.STRING)
+    private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "lesson_id", nullable = false)
+    private Lesson lesson; // Relación con la entidad Lesson
 }

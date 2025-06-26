@@ -1,14 +1,21 @@
 package org.example.yukiacademy.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob; // Importación necesaria para @Lob
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "courses")
@@ -21,46 +28,39 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
-    private String title;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    // Se utiliza @Lob y columnDefinition para mapear a CLOB en Oracle para texto largo
+    @Lob
+    @Column(columnDefinition = "CLOB", nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private String imageUrl; // URL de la imagen de portada del curso
+    @Column(name = "image_url", nullable = false, length = 255) // Mapea a VARCHAR2(255)
+    private String imageUrl;
 
-    @Column(nullable = false)
-    private BigDecimal price;
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255) // Mapea a VARCHAR2(255)
     private String language;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private CourseLevel level;
+    @Enumerated(EnumType.STRING) // Mapea el enum como String en la BD
+    @Column(name = "course_level", length = 20) // <-- ¡CAMBIO CLAVE AQUÍ: renombramos 'level' a 'course_level'!
+    private CourseLevel level; // Referencia al enum CourseLevel (que es anidado en esta clase)
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "professor_id", nullable = false)
-    private User professor; // El usuario que es profesor de este curso
+    @Column(nullable = false, precision = 38, scale = 2) // Mapea a NUMBER(38,2)
+    private BigDecimal price;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Module> modules = new HashSet<>();
-
-    // Campos de auditoría
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false, length = 200) // Mapea a VARCHAR2(200)
+    private String title;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    @ManyToOne
+    @JoinColumn(name = "professor_id", nullable = false)
+    private User professor; // Relación con la entidad User (profesor)
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    // ¡La definición del enum CourseLevel como clase anidada!
+    public enum CourseLevel {
+        BEGINNER, INTERMEDIATE, ADVANCED, ALL_LEVELS
     }
 }

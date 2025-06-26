@@ -1,12 +1,17 @@
 package org.example.yukiacademy.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob; // Importación necesaria para @Lob
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "modules")
@@ -19,20 +24,18 @@ public class Module {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
+    // Se utiliza @Lob y columnDefinition para mapear a CLOB en Oracle para texto largo
+    @Lob
+    @Column(columnDefinition = "CLOB")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
-
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("orderIndex ASC") // Opcional: para mantener las lecciones ordenadas
-    private Set<Lesson> lessons = new HashSet<>();
-
     @Column(name = "order_index")
-    private Integer orderIndex; // Para el orden de los módulos dentro del curso
+    private Integer orderIndex;
+
+    @Column(nullable = false, length = 100) // Mapea a VARCHAR2(100)
+    private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course; // Relación con la entidad Course
 }

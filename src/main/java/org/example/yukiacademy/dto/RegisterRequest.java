@@ -4,8 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor; // Necesario para el constructor sin argumentos de Lombok
+import lombok.AllArgsConstructor; // Necesario para el constructor con todos los argumentos de Lombok
 
-@Data // Lombok
+@Data // Genera getters, setters, toString, equals, y hashCode
+@NoArgsConstructor // Genera un constructor sin argumentos
+@AllArgsConstructor // Genera un constructor con todos los argumentos
 public class RegisterRequest {
 
     @NotBlank(message = "El email no puede estar vacío")

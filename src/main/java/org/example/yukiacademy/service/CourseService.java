@@ -1,111 +1,149 @@
 package org.example.yukiacademy.service;
 
-import org.example.yukiacademy.model.Role; // Importación necesaria para usar Role.RoleName
 import org.example.yukiacademy.dto.CourseDto;
 import org.example.yukiacademy.model.Course;
-import org.example.yukiacademy.model.User;
+import org.example.yukiacademy.model.CourseLevel; // Importación del enum CourseLevel
+import org.example.yukiacademy.model.User; // Importación de la entidad User
 import org.example.yukiacademy.repository.CourseRepository;
 import org.example.yukiacademy.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service // Anotación para que Spring lo reconozca como un bean de servicio
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository; // Para buscar al profesor
+    private final UserRepository userRepository; // Inyectamos UserRepository para encontrar al profesor
 
+    // Constructor para inyección de dependencias
     public CourseService(CourseRepository courseRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
     }
 
+    /**
+     * Crea un nuevo curso en la base de datos.
+     * @param courseDto El DTO que contiene los datos del curso a crear.
+     * @param professorId El ID del profesor que crea el curso (autenticado).
+     * @return El CourseDto del curso creado.
+     * @throws ResponseStatusException si el profesor no es encontrado.
+     */
+    @Transactional // Marca el método como transaccional
     public CourseDto createCourse(CourseDto courseDto, Long professorId) {
+        // Buscar al profesor por su ID
         User professor = userRepository.findById(professorId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profesor no encontrado con ID: " + professorId));
 
-        // Validar que el usuario sea realmente un profesor
-        boolean isProfessor = professor.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(Role.RoleName.ROLE_PROFESSOR) || role.getName().equals(Role.RoleName.ROLE_ADMIN));
-        if (!isProfessor) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo los profesores o administradores pueden crear cursos.");
-        }
-
         Course course = new Course();
+        // Mapear propiedades de CourseDto a la entidad Course
         course.setTitle(courseDto.getTitle());
         course.setDescription(courseDto.getDescription());
-        course.setImageUrl(courseDto.getImageUrl());
         course.setPrice(courseDto.getPrice());
+        course.setImageUrl(courseDto.getImageUrl());
         course.setLanguage(courseDto.getLanguage());
-        course.setLevel(courseDto.getLevel());
-        course.setProfessor(professor);
-        course.setCreatedAt(LocalDateTime.now());
+        course.setLevel(courseDto.getLevel()); // Usamos el enum CourseLevel
+        course.setProfessor(professor); // Asignar el profesor
+        course.setCreatedAt(LocalDateTime.now()); // Establecer la fecha de creación
+        course.setUpdatedAt(LocalDateTime.now()); // Establecer la fecha de actualización
 
         Course savedCourse = courseRepository.save(course);
-        return convertToDto(savedCourse);
+        return convertToDto(savedCourse); // Convertir la entidad guardada a DTO y devolver
     }
 
+    /**
+     * Obtiene una lista de todos los cursos disponibles.
+     * @return Una lista de CourseDto.
+     */
     public List<CourseDto> getAllCourses() {
         return courseRepository.findAll().stream()
-                .map(this::convertToDto)
+                .map(this::convertToDto) // Convertir cada entidad a DTO
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene un curso específico por su ID.
+     * @param id El ID del curso.
+     * @return El CourseDto del curso.
+     * @throws ResponseStatusException si el curso no es encontrado.
+     */
     public CourseDto getCourseById(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado con ID: " + id));
         return convertToDto(course);
     }
 
-    public CourseDto updateCourse(Long courseId, CourseDto courseDto, Long professorId) {
-        Course existingCourse = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado con ID: " + courseId));
+    /**
+     * Actualiza un curso existente.
+     * @param id El ID del curso a actualizar.
+     * @param courseDto El DTO con los datos actualizados del curso.
+     * @param authenticatedUserId El ID del usuario autenticado (para verificar permisos).
+     * @return El CourseDto del curso actualizado.
+     * @throws ResponseStatusException si el curso no es encontrado o el usuario no tiene permisos.
+     */
+    @Transactional
+    public CourseDto updateCourse(Long id, CourseDto courseDto, Long authenticatedUserId) {
+        Course existingCourse = courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado con ID: " + id));
 
-        // Asegurarse de que el profesor que intenta actualizar el curso sea el dueño o un admin
-        if (!existingCourse.getProfessor().getId().equals(professorId) && !userRepository.findById(professorId).get().getRoles().stream().anyMatch(r -> r.getName().equals(Role.RoleName.ROLE_ADMIN))) {
+        // Verificar si el usuario autenticado es el profesor del curso o un ADMIN
+        if (!existingCourse.getProfessor().getId().equals(authenticatedUserId) && !userRepository.findById(authenticatedUserId).get().getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para actualizar este curso.");
         }
 
+        // Actualizar propiedades
         existingCourse.setTitle(courseDto.getTitle());
         existingCourse.setDescription(courseDto.getDescription());
-        existingCourse.setImageUrl(courseDto.getImageUrl());
         existingCourse.setPrice(courseDto.getPrice());
+        existingCourse.setImageUrl(courseDto.getImageUrl());
         existingCourse.setLanguage(courseDto.getLanguage());
-        existingCourse.setLevel(courseDto.getLevel());
-        existingCourse.setUpdatedAt(LocalDateTime.now());
+        existingCourse.setLevel(courseDto.getLevel()); // Actualizar el nivel
+        existingCourse.setUpdatedAt(LocalDateTime.now()); // Actualizar fecha de modificación
 
         Course updatedCourse = courseRepository.save(existingCourse);
         return convertToDto(updatedCourse);
     }
 
-    public void deleteCourse(Long courseId, Long professorId) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado con ID: " + courseId));
+    /**
+     * Elimina un curso por su ID.
+     * @param id El ID del curso a eliminar.
+     * @param authenticatedUserId El ID del usuario autenticado (para verificar permisos).
+     * @throws ResponseStatusException si el curso no es encontrado o el usuario no tiene permisos.
+     */
+    @Transactional
+    public void deleteCourse(Long id, Long authenticatedUserId) {
+        Course courseToDelete = courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado con ID: " + id));
 
-        // Asegurarse de que el profesor que intenta eliminar el curso sea el dueño o un admin
-        if (!course.getProfessor().getId().equals(professorId) && !userRepository.findById(professorId).get().getRoles().stream().anyMatch(r -> r.getName().equals(Role.RoleName.ROLE_ADMIN))) {
+        // Verificar si el usuario autenticado es el profesor del curso o un ADMIN
+        if (!courseToDelete.getProfessor().getId().equals(authenticatedUserId) && !userRepository.findById(authenticatedUserId).get().getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para eliminar este curso.");
         }
-        courseRepository.delete(course);
+
+        courseRepository.delete(courseToDelete);
     }
 
-    // Método auxiliar para convertir entidad a DTO
+    /**
+     * Método auxiliar para convertir una entidad Course a un DTO CourseDto.
+     * @param course La entidad Course.
+     * @return El CourseDto correspondiente.
+     */
     private CourseDto convertToDto(Course course) {
-        CourseDto dto = new CourseDto();
-        dto.setId(course.getId());
-        dto.setTitle(course.getTitle());
-        dto.setDescription(course.getDescription());
-        dto.setImageUrl(course.getImageUrl());
-        dto.setPrice(course.getPrice());
-        dto.setLanguage(course.getLanguage());
-        dto.setLevel(course.getLevel());
-        dto.setProfessorId(course.getProfessor().getId());
-        dto.setProfessorName(course.getProfessor().getFirstName() + " " + course.getProfessor().getLastName());
-        return dto;
+        CourseDto courseDto = new CourseDto();
+        courseDto.setId(course.getId());
+        courseDto.setTitle(course.getTitle());
+        courseDto.setDescription(course.getDescription());
+        courseDto.setPrice(course.getPrice());
+        courseDto.setImageUrl(course.getImageUrl());
+        courseDto.setLanguage(course.getLanguage());
+        courseDto.setLevel(course.getLevel()); // Usamos el enum CourseLevel
+        courseDto.setProfessorId(course.getProfessor().getId()); // Aseguramos que el ID del profesor se mapee
+
+        return courseDto;
     }
 }

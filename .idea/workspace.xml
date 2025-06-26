@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3d04d88c-5592-482c-a009-2e8175b195b1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/CourseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/CourseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/dto/RegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Content.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/CourseLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/CourseLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Lesson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/repository/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/security/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/security/jwt/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/yukiacademy/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Vraneth"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Vraneth/YukiAcademy",
+    "accountId": "17025044-a493-416c-b03f-5d66bb25ba93"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2z1dCWzAG4ay0Rf9qDr5NP3qXHP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.YukiAcademy [clean].executor": "Run",
+    "Maven.YukiAcademy [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.YukiAcademyApplication.executor": "Run",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="YukiAcademyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="YukiAcademy" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.yukiacademy.YukiAcademyApplication" />
+      <option name="VM_PARAMETERS" value="-Doracle.net.tns_admin=&quot;C:\Users\marce\IdeaProjects\YukiAcademy\src\main\resources\WALLET&quot;" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3d04d88c-5592-482c-a009-2e8175b195b1" name="Changes" comment="" />
+      <created>1750902386905</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750902386905</updated>
+      <workItem from="1750902389103" duration="2488000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
