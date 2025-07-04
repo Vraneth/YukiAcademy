@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    // Método personalizado para buscar un rol por su nombre (ej. ROLE_STUDENT)
     Optional<Role> findByName(Role.RoleName name);
 }

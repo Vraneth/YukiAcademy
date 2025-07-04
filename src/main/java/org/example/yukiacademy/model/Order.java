@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList; // Importar ArrayList
+import java.util.List;    // Importar List
 
 @Entity
 @Table(name = "orders")
@@ -21,28 +20,54 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // El usuario que realizó la compra
+    private User user;
 
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private OrderStatus status; // PENDING, COMPLETED, CANCELLED, REFUNDED
-
-    @Column(name = "order_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime orderDate;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Payment payment; // La información del pago asociada a esta orden
+    // ¡CAMBIO CLAVE AQUÍ! Asegurarse de que es List y que se inicializa como ArrayList
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>(); // Inicializar con ArrayList
+
+    // Campos para la integración con Mercado Pago
+    @Column(name = "mp_preference_id", length = 255)
+    private String mpPreferenceId;
+
+    @Column(name = "mp_payment_id", length = 255)
+    private String mpPaymentId;
+
+    @Column(name = "mp_payment_status", length = 50)
+    private String mpPaymentStatus;
+
+    @Column(name = "mp_payment_detail", length = 255)
+    private String mpPaymentDetail;
+
+    // Métodos de ciclo de vida JPA si los necesitas para auditoría
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.orderDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        if (this.orderDate == null) {
+            this.orderDate = LocalDateTime.now(); // Asegura una fecha de orden si no se establece
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

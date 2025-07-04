@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException; // Importa esta excepción
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,11 +65,19 @@ public class AuthService {
         roles.add(studentRole);
         user.setRoles(roles);
 
+        // Establecer valores por defecto para profilePictureUrl y bio si es un nuevo registro y no se proporcionan
+        // Esto es opcional, pero asegura que no sean null en el objeto User si el frontend los espera
+        if (user.getProfilePictureUrl() == null || user.getProfilePictureUrl().isEmpty()) {
+            user.setProfilePictureUrl(null); // O una URL de imagen por defecto
+        }
+        if (user.getBio() == null || user.getBio().isEmpty()) {
+            user.setBio(null); // O una biografía por defecto
+        }
+
         // 4. Guardar el usuario en la base de datos
-        userRepository.save(user);
+        userRepository.save(user); // Guarda el usuario con los roles y, opcionalmente, los valores por defecto de perfil/bio
 
         // 5. Autenticar y generar JWT inmediatamente después del registro
-        // Esto automáticamente "loguea" al usuario recién creado.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword())
         );
@@ -85,9 +94,20 @@ public class AuthService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // 6. Devolver el AuthResponse con el token y la información del usuario
-        return new AuthResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-                userDetails.getFirstName(), userDetails.getLastName(), userRoles);
+        // Para obtener profilePictureUrl y bio, necesitamos el objeto User completo
+        // userDetails no contiene estos campos por defecto
+        User registeredUser = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario registrado no encontrado"));
+
+        // 6. Devolver el AuthResponse con el token y la información completa del usuario
+        return new AuthResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(), // Email
+                userDetails.getFirstName(), // Nombre (si UserDetailsImpl lo tiene)
+                userDetails.getLastName(),  // Apellido (si UserDetailsImpl lo tiene)
+                userRoles,
+                registeredUser.getProfilePictureUrl(), // <-- ¡AÑADIDO!
+                registeredUser.getBio());             // <-- ¡AÑADIDO!
     }
 
     // Método de autenticación de usuario (login)
@@ -111,9 +131,19 @@ public class AuthService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // 6. Devolver la respuesta con el JWT
-        // userDetails.getUsername() por defecto es el email en UserDetailsImpl
-        return new AuthResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-                userDetails.getFirstName(), userDetails.getLastName(), roles);
+        // Para obtener profilePictureUrl y bio, necesitamos el objeto User completo
+        // userDetails no contiene estos campos por defecto
+        User authenticatedUser = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario autenticado no encontrado"));
+
+        // 6. Devolver la respuesta con el JWT y la información completa del perfil
+        return new AuthResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(), // Email
+                userDetails.getFirstName(), // Nombre
+                userDetails.getLastName(),  // Apellido
+                roles,
+                authenticatedUser.getProfilePictureUrl(), // <-- ¡AÑADIDO!
+                authenticatedUser.getBio());             // <-- ¡AÑADIDO!
     }
 }

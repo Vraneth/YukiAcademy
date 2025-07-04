@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 @Service
 public class OrderService {
@@ -60,7 +61,8 @@ public class OrderService {
         order.setUser(user);
         order.setTotalAmount(totalAmount);
         order.setStatus(OrderStatus.PENDING);
-        order.setOrderItems(orderItems);
+        // En la primera llamada a setOrderItems
+        order.setOrderItems(new ArrayList<>(orderItems));
 
         // Guardar la orden primero para que tenga un ID
         Order savedOrder = orderRepository.save(order);
@@ -71,7 +73,8 @@ public class OrderService {
             orderItemRepository.save(item);
         }
 
-        savedOrder.setOrderItems(orderItems); // Asegurarse de que la colección en la orden esté actualizada
+        // Y en la última línea del método
+        savedOrder.setOrderItems(new ArrayList<>(orderItems)); // Asegurarse de que la colección en la orden esté actualizada
         return savedOrder;
     }
 

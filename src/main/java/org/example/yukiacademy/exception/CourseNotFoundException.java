@@ -1,0 +1,11 @@
+package org.example.yukiacademy.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND) // Define que esta excepción resulta en un 404 Not Found
+public class CourseNotFoundException extends RuntimeException {
+    public CourseNotFoundException(String message) {
+        super(message);
+    }
+}

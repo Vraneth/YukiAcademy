@@ -10,10 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,10 +26,10 @@ public class User {
     @Column(nullable = false, length = 120)
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 50) // Campo para el nombre
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 50) // Campo para el apellido
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -48,24 +45,33 @@ public class User {
     private String bio;
     private String interests;
 
+    @Column(name = "receive_email_notifications")
+    private Boolean receiveEmailNotifications = true;
+
+    @Column(name = "profile_visible_to_public")
+    private Boolean profileVisibleToPublic = true;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Constructor para la creación de usuarios desde el registro (sin roles inicialmente)
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.createdAt = LocalDateTime.now(); // Establecer fecha de creación al construir
+        this.createdAt = LocalDateTime.now();
+        this.receiveEmailNotifications = true;
+        this.profileVisibleToPublic = true;
     }
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        if (this.receiveEmailNotifications == null) this.receiveEmailNotifications = true;
+        if (this.profileVisibleToPublic == null) this.profileVisibleToPublic = true;
     }
 
     @PreUpdate

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Configuración del nivel de logging para tu paquete de aplicación -->
+    <!-- Esto mostrará todos los mensajes INFO, DEBUG, WARN y ERROR de tu código -->
+    <logger name="org.example.yukiacademy" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!-- Configuración del nivel de logging para el SDK de Mercado Pago -->
+    <logger name="com.mercadopago" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!-- Configuración por defecto para el resto de Spring y otras librerías -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+
+</configuration>
