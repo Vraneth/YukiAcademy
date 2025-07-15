@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7ee28e37-7ebf-40d6-97ea-a032291de716" name="Changes" comment="OK">
+      <change beforePath="$PROJECT_DIR$/../Yuki-academy-front-end-main/Yuki-academy-front-end-main" beforeDir="false" afterPath="$PROJECT_DIR$/../Yuki-academy-front-end-main/Yuki-academy-front-end-main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../YukiAcademy-master.rar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ferreplus" beforeDir="false" afterPath="$PROJECT_DIR$/../ferreplus" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front_end_integracion" beforeDir="false" afterPath="$PROJECT_DIR$/../front_end_integracion" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Vraneth&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Vraneth/YukiAcademy.git",
+    "accountId": "17025044-a493-416c-b03f-5d66bb25ba93"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2z4gkEAhWkXEeMoh1tTbI8Hgl1U" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.YukiAcademy [clean].executor": "Run",
+    "Maven.YukiAcademy [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.YukiAcademyApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/marce/IdeaProjects/YukiAcademy-master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="YukiAcademyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="YukiAcademy" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.yukiacademy.YukiAcademyApplication" />
+      <option name="VM_PARAMETERS" value="-Doracle.net.tns_admin=&quot;C:\Users\marce\IdeaProjects\YukiAcademy-master\src\main\resources\WALLET&quot; " />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7ee28e37-7ebf-40d6-97ea-a032291de716" name="Changes" comment="" />
+      <created>1750995901108</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750995901108</updated>
+      <workItem from="1750995903148" duration="15161000" />
+      <workItem from="1751594618328" duration="285000" />
+      <workItem from="1751594998123" duration="10559000" />
+      <workItem from="1751760343376" duration="9173000" />
+      <workItem from="1751770661400" duration="7983000" />
+      <workItem from="1751808055932" duration="9641000" />
+      <workItem from="1751826491226" duration="848000" />
+      <workItem from="1751915555326" duration="16838000" />
+      <workItem from="1751935984202" duration="2605000" />
+      <workItem from="1751939977104" duration="1045000" />
+      <workItem from="1752016052519" duration="2000000" />
+      <workItem from="1752018162782" duration="8000" />
+      <workItem from="1752019449110" duration="538000" />
+      <workItem from="1752020473435" duration="1744000" />
+      <workItem from="1752022537496" duration="24000" />
+      <workItem from="1752515676668" duration="1009000" />
+      <workItem from="1752542279537" duration="2289000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="OK" />
+    <option name="LAST_COMMIT_MESSAGE" value="OK" />
+  </component>
+</project>
